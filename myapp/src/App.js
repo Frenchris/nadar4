@@ -1,18 +1,29 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import store from './store.js'
+import Homepage from './components/Homepage.js'
+
+const views = {
+  Home: Homepage
+}
 
 class App extends Component {
+  constructor() {
+    super()
+    this.state = store.getState()
+    store.subscribe(() => {
+      this.setState(store.getState())
+    })
+  }
+
+  componentDidMount(){
+    // fetch ?
+  }
+
   render() {
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
-        </header>
-        <p className="App-intro">
-          To get started, edit <code>src/App.js</code> and save to reload.
-        </p>
+        {views[this.state.router.pageActive](this.state)}
       </div>
     );
   }
